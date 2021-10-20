@@ -2,6 +2,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+import sun.misc.Resource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +23,7 @@ public class main {
             con.setUseCaches(false);
             con.setAllowUserInteraction(false);
             con.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream())); // This line makes the request
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -72,7 +74,7 @@ public class main {
             con.setUseCaches(false);
             con.setAllowUserInteraction(false);
             con.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream())); // This line makes the request
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -165,7 +167,7 @@ public class main {
             con.setUseCaches(false);
             con.setAllowUserInteraction(false);
             con.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream())); // This line makes the request
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -191,7 +193,7 @@ public class main {
             con.setUseCaches(false);
             con.setAllowUserInteraction(false);
             con.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream())); // This line makes the request
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -217,7 +219,7 @@ public class main {
             con.setUseCaches(false);
             con.setAllowUserInteraction(false);
             con.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream())); // This line makes the request
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -233,7 +235,6 @@ public class main {
         }
     }
 
-    //some issues
     public static void removeProsthesis (String value, int id){
         String result = "ERROR";
         try {
@@ -244,7 +245,7 @@ public class main {
             con.setUseCaches(false);
             con.setAllowUserInteraction(false);
             con.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream())); // This line makes the request
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -270,7 +271,7 @@ public class main {
             con.setUseCaches(false);
             con.setAllowUserInteraction(false);
             con.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream())); // This line makes the request
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -301,7 +302,7 @@ public class main {
             con.setUseCaches(false);
             con.setAllowUserInteraction(false);
             con.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream())); // This line makes the request
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -327,7 +328,7 @@ public class main {
             con.setUseCaches(false);
             con.setAllowUserInteraction(false);
             con.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream())); // This line makes the request
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -348,8 +349,88 @@ public class main {
         } return null;
     }
 
+    // how to get resource from server
+    public static Resource getTest(String value, int id){
+        String result = "ERROR";
+        try {
+            URL url = new URL(SERVER_URL + value +"/my/tests/" + id);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Content-length", "0");
+            con.setUseCaches(false);
+            con.setAllowUserInteraction(false);
+            con.connect();
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            result = sb.toString();
+            System.out.println(result);
+        } catch (MalformedURLException | ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } return null;
+    }
+
+    //what to do with multipartfile
+    public static void addTest (String value, MultipartFile file, int id){
+        String result = "ERROR";
+        try {
+            URL url = new URL(SERVER_URL + value+ "/my/tests/add?file=" + file + "&?prosthesis=" + id);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("PUT");
+            con.setRequestProperty("Content-length", "0");
+            con.setUseCaches(false);
+            con.setAllowUserInteraction(false);
+            con.connect();
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            result = sb.toString();
+            System.out.println(result);
+        } catch (MalformedURLException | ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteTest (String value, int id){
+        String result = "ERROR";
+        try {
+            URL url = new URL(SERVER_URL + value + "/my/tests/" + id);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("DELETE");
+            con.setRequestProperty("Content-length", "0");
+            con.setUseCaches(false);
+            con.setAllowUserInteraction(false);
+            con.connect();
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            result = sb.toString();
+            System.out.println(result);
+        } catch (MalformedURLException | ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) {
-    getTests(login("log","123").value);
+        removeProsthesis(login("log","123").value, 1);
     }
 }
